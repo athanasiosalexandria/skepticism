@@ -2,65 +2,32 @@
 <html>
 <head>
   <meta charset="UTF-8">
-   <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="icon" href="images/favicon.png" type="image/png">
   <title>Athanasios Angouras</title>
   <style>
     @import url(https://themes.googleusercontent.com/fonts/css?kit=pR0sBQVcY0JZc_ciXjFsK00bFgWhVDxGeNvvjX778ks);
-  html, body {
-    overflow: hidden;
-  }
-    body {
-      background-color: #ffffff;
-      max-width: 468pt;
-      padding: 72pt;
-      font-family: "Libre Baskerville", serif;
-    }
-
-    .c1 {
-      font-size: 19pt;
-    }
-
-    .c3 {
-      font-size: 12pt;
-      margin: 0; /* reset margins */
-    }
-
-    /* Add space below the Student line */
-    .c3.student-line {
-      margin-bottom: 20px; /* Adjust the space as you like */
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      font-size: 19pt;
-    }
-
-    p {
+    
+    html, body {
+      overflow: hidden;
       margin: 0;
       padding: 0;
     }
 
-    nav {
-      margin-top: 30px; /* space above nav */
+    body {
+      background-color: #ffffff;
+      font-family: "Libre Baskerville", serif;
+      padding: 72pt;
     }
-  </style>
-</head>
-<body>
-  <p>
-    <img src="images/image1.png" style="width: 158.5px; height: 158.5px;" alt="">
-  </p>
 
-  <p class="c1">Athanasios “Nasos” Angouras</p>
-  <p class="c3 student-line">Student, University of California, San Diego</p>
-  <p class="c3">In Progress: BA in Classical Studies with Minor in Philosophy</p>
-  <p class="c3">Expected Graduation: Spring-Summer 2026</p>
-  <p class="c3">Interests: Latin, Hellenistic Philosophy, Christianity, Classical and Hellenistic Greek Antiquity</p>
-  <p class="c3">Post-Undergraduate Plan: JD/PhD Program</p>
-  <p class="c3">Contact: aangouras@ucsd.edu</p>
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 800px;
+    }
 
-  <nav>
-    <div><a href="about.html">About</a></div>
-  </nav>
-</body>
-</html>
+    .text-content {
+      max-width: 60%;
+    }
+
+    .c
