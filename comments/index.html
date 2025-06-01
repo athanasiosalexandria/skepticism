@@ -38,6 +38,22 @@
 
     .content {
       max-width: 800px;
+      <form id="comment-form">
+        <label for="name">Name:</label><br/>
+        <input type="text" id="name" required/><br/><br/>
+
+        <label for="comment">Comment:</label><br/>
+        <textarea id="comment" rows="4" required></textarea><br/><br/>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      <hr/>
+
+      <div id="comments-list">
+        <!-- Comments will be loaded here -->
+      </div>
+
     }
 
     h1 {
@@ -62,6 +78,83 @@
       margin-top: 30px;
     }
   </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  
+  <!-- Firebase Firestore (for database) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<script>
+  // Reference to Firestore collection 'comments'
+const commentsRef = db.collection('comments');
+
+const form = document.getElementById('comment-form');
+const commentsList = document.getElementById('comments-list');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = form.name.value.trim();
+  const comment = form.comment.value.trim();
+
+  if (!name || !comment) {
+    alert('Please fill in both fields');
+    return;
+  }
+
+  try {
+    await commentsRef.add({
+      name,
+      comment,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    form.reset();
+  } catch (error) {
+    console.error('Error adding comment: ', error);
+  }
+});
+  commentsRef.orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+  commentsList.innerHTML = '';
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    const commentDiv = document.createElement('div');
+    commentDiv.style.border = '1px solid #ddd';
+    commentDiv.style.padding = '10px';
+    commentDiv.style.marginBottom = '10px';
+
+    const nameEl = document.createElement('strong');
+    nameEl.textContent = data.name;
+
+    const commentEl = document.createElement('p');
+    commentEl.textContent = data.comment;
+
+    commentDiv.appendChild(nameEl);
+    commentDiv.appendChild(commentEl);
+
+    commentsList.appendChild(commentDiv);
+  });
+});
+
+</script>
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDF8JB5agbRfucm_bk4W_MgH_av3Pd33nY",
+      authDomain: "commentboard-704f2.firebaseapp.com",
+      projectId: "commentboard-704f2",
+      storageBucket: "commentboard-704f2.firebasestorage.app",
+      messagingSenderId: "917101883529",
+      appId: "1:917101883529:web:5890b3202bdae97465d658",
+      measurementId: "G-4EFE4K37P7"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script> 
 </head>
 <body>
   <div class="container">
