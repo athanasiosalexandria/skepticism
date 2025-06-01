@@ -105,6 +105,20 @@
       animation: fadeSlideInFromLeft 2s ease forwards;
       animation-delay: 0.25s;
     }
+    }
+
+    /* Responsive adjustments for mobile */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .text-section {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
