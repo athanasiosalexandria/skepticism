@@ -2,38 +2,44 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="images/favicon.png" type="image/png">
   <title>Nasos Angouras</title>
   <link rel="preload" as="image" href="images/profileimage2.png">
   <style>
     @import url(https://themes.googleusercontent.com/fonts/css?kit=pR0sBQVcY0JZc_ciXjFsK00bFgWhVDxGeNvvjX778ks);
+
     @keyframes fadeSlideIn {
       from {
         opacity: 0;
-        transform: translateX(50px); /* start 50px to the right */
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0); /* end at original position */
-      }
-    }
-    @keyframes fadeSlideInFromLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-50px); /* start 50px right */
+        transform: translateX(50px);
       }
       to {
         opacity: 1;
         transform: translateX(0);
       }
+    }
+
+    @keyframes fadeSlideInFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
     html, body {
-    overflow: hidden;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
-    }
+
     body {
       font-family: "Libre Baskerville", serif;
       background-color: #ffffff;
-      margin: 0;
       padding: 72pt;
       box-sizing: border-box;
     }
@@ -44,6 +50,7 @@
       justify-content: space-between;
       max-width: 1000px;
       margin: 0 auto;
+      gap: 40px;
     }
 
     .text-section {
@@ -68,9 +75,10 @@
     nav {
       margin-top: 30px;
     }
+
     .nav-buttons {
       display: flex;
-      gap: 20px; /* space between buttons */
+      gap: 20px;
     }
 
     .nav-buttons a {
@@ -91,11 +99,13 @@
       text-decoration: none;
       color: inherit;
       font-size: 19pt;
-      transition: color 0.5s ease; /* Smooth transition */
+      transition: color 0.5s ease;
     }
+
     a:hover {
-      color: #0095e0; /* New color on hover (change as you like) */
-      }
+      color: #0095e0;
+    }
+
     .profile-image {
       opacity: 0;
       width: 200px;
@@ -105,18 +115,28 @@
       animation: fadeSlideInFromLeft 2s ease forwards;
       animation-delay: 0.25s;
     }
-    }
 
-    /* Responsive adjustments for mobile */
+    /* Mobile responsive adjustments */
     @media (max-width: 768px) {
+      body {
+        padding: 24pt;
+      }
+
       .container {
         flex-direction: column;
-        padding: 20px;
+        align-items: center;
         text-align: center;
+        gap: 20px;
       }
 
       .text-section {
+        max-width: 100%;
         text-align: center;
+      }
+
+      .profile-image {
+        margin-left: 0;
+        margin-bottom: 20px;
       }
     }
   </style>
@@ -132,12 +152,13 @@
 
       <nav>
         <div>
-          <a href="/about/">About</a></div>
+          <a href="/about/">About</a>
+        </div>
+        <div>
           <a href="/comments/">Leave a Comment</a>
+        </div>
       </nav>
     </div>
-
-
   </div>
 </body>
 </html>
