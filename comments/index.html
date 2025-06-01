@@ -103,6 +103,23 @@
     .back-button:hover {
       background-color: #333;
     }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+
+    .header-row h1 {
+      font-size: 32px;
+      margin: 0;
+    }
+
+    .header-icon {
+      width: 40px; /* Adjust size as needed */
+      height: auto;
+    }
     }
   </style>
 
@@ -192,8 +209,10 @@
   <div class="container">
     <div class="content">
       <a href="/" class="back-button">&larr; Back</a>
-      <h1>Leave a Comment</h1>
-
+      <div class="header-row">
+        <h1>Leave a Comment</h1>
+        <img src="/images/image4.png" alt="Icon" class="header-icon" />
+      </div>
       <form id="comment-form">
         <label for="name">Name:</label><br/>
         <input type="text" id="name" name="name" required /><br/><br/>
