@@ -68,6 +68,24 @@
     nav {
       margin-top: 30px;
     }
+    .nav-buttons {
+      display: flex;
+      gap: 20px; /* space between buttons */
+    }
+
+    .nav-buttons a {
+      background-color: #1155cc;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #0d3b99;
+    }
 
     a {
       text-decoration: none;
@@ -99,7 +117,9 @@
       <p class="c3">Contact: aangouras@ucsd.edu</p>
 
       <nav>
-        <div><a href="/about/">About</a></div>
+        <div>
+          <a href="/about/">About</a></div>
+          <a href="/comments/">Leave a Comment</a>
       </nav>
     </div>
 
