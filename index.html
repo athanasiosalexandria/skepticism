@@ -18,21 +18,28 @@
 
     .c3 {
       font-size: 12pt;
+      margin: 0; /* reset margins */
+    }
+
+    /* Add space below the Student line */
+    .c3.student-line {
+      margin-bottom: 10px; /* Adjust the space as you like */
     }
 
     a {
       text-decoration: none;
       color: inherit;
       font-size: 19pt;
-    
     }
-  p {
-  margin: 0;
-  padding: 0;
-}
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
     nav {
-  margin-top: 20px; /* add space above the nav block */
-}
+      margin-top: 20px; /* space above nav */
+    }
   </style>
 </head>
 <body>
@@ -41,7 +48,7 @@
   </p>
 
   <p class="c1">Athanasios “Nasos” Angouras</p>
-  <p class="c3">Student, University of California, San Diego</p>
+  <p class="c3 student-line">Student, University of California, San Diego</p>
   <p class="c3">In Progress: BA in Classical Studies with Minor in Philosophy</p>
   <p class="c3">Expected Graduation: Spring-Summer 2026</p>
   <p class="c3">Interests: Latin, Hellenistic Philosophy, Christianity, Classical and Hellenistic Greek Antiquity</p>
@@ -50,7 +57,6 @@
 
   <nav>
     <div><a href="about.html">About</a></div>
-    
   </nav>
 </body>
 </html>
