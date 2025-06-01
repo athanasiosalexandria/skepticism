@@ -2,145 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/images/favicon.png" type="image/png" />
   <title>Leave a Comment</title>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet" />
   <style>
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      margin: 0; padding: 0; box-sizing: border-box;
     }
-
     html, body {
-      background-color: #ffffff;
+      background: #fff;
       font-family: 'Libre Baskerville', serif;
-      color: #000000;
+      color: #000;
       animation: fadeIn 2s ease forwards;
     }
-
     .container {
       display: flex;
       justify-content: center;
       text-align: left;
       padding: 80px 40px;
     }
-
     .content {
       max-width: 800px;
-      <form id="comment-form">
-        <label for="name">Name:</label><br/>
-        <input type="text" id="name" required/><br/><br/>
-
-        <label for="comment">Comment:</label><br/>
-        <textarea id="comment" rows="4" required></textarea><br/><br/>
-
-        <button type="submit">Submit</button>
-      </form>
-
-      <hr/>
-
-      <div id="comments-list">
-        <!-- Comments will be loaded here -->
-      </div>
-
     }
-
     h1 {
       font-size: 32px;
       margin-top: 70px;
       margin-bottom: 20px;
     }
-
-    p {
+    form label, form input, form textarea, form button {
+      display: block;
+      margin-bottom: 12px;
       font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 16px;
     }
-
-    a {
-      color: #1155cc;
-      text-decoration: underline;
+    form input, form textarea {
+      width: 100%;
+      padding: 8px;
+      font-family: inherit;
+      font-size: 16px;
     }
-
+    form button {
+      width: auto;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #comments-list > div {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
     footer {
       font-size: 14px;
       margin-top: 30px;
     }
   </style>
-  <!-- Firebase App (the core Firebase SDK) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  
-  <!-- Firebase Firestore (for database) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-<script>
-  // Reference to Firestore collection 'comments'
-const commentsRef = db.collection('comments');
 
-const form = document.getElementById('comment-form');
-const commentsList = document.getElementById('comments-list');
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import the functions you need from the SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const name = form.name.value.trim();
-  const comment = form.comment.value.trim();
-
-  if (!name || !comment) {
-    alert('Please fill in both fields');
-    return;
-  }
-
-  try {
-    await commentsRef.add({
-      name,
-      comment,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
-    form.reset();
-  } catch (error) {
-    console.error('Error adding comment: ', error);
-  }
-});
-  commentsRef.orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-  commentsList.innerHTML = '';
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-
-    const commentDiv = document.createElement('div');
-    commentDiv.style.border = '1px solid #ddd';
-    commentDiv.style.padding = '10px';
-    commentDiv.style.marginBottom = '10px';
-
-    const nameEl = document.createElement('strong');
-    nameEl.textContent = data.name;
-
-    const commentEl = document.createElement('p');
-    commentEl.textContent = data.comment;
-
-    commentDiv.appendChild(nameEl);
-    commentDiv.appendChild(commentEl);
-
-    commentsList.appendChild(commentDiv);
-  });
-});
-
-</script>
-  <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDF8JB5agbRfucm_bk4W_MgH_av3Pd33nY",
       authDomain: "commentboard-704f2.firebaseapp.com",
@@ -153,21 +80,70 @@ form.addEventListener('submit', async (e) => {
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script> 
+    const db = getFirestore(app);
+
+    // DOM references
+    const form = document.getElementById('comment-form');
+    const commentsList = document.getElementById('comments-list');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const comment = form.comment.value.trim();
+      if (!name || !comment) {
+        alert('Please fill in both fields');
+        return;
+      }
+      try {
+        await addDoc(collection(db, 'comments'), {
+          name,
+          comment,
+          timestamp: serverTimestamp()
+        });
+        form.reset();
+      } catch (error) {
+        console.error('Error adding comment:', error);
+      }
+    });
+
+    // Listen for new comments and display them
+    const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
+    onSnapshot(q, (snapshot) => {
+      commentsList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.textContent = data.name || 'Anonymous';
+        const p = document.createElement('p');
+        p.textContent = data.comment || '';
+        div.appendChild(strong);
+        div.appendChild(p);
+        commentsList.appendChild(div);
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <div class="content">
       <h1>Leave a Comment</h1>
+      <form id="comment-form">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required />
+        
+        <label for="comment">Comment:</label>
+        <textarea name="comment" id="comment" rows="4" required></textarea>
+        
+        <button type="submit">Submit</button>
+      </form>
 
-    
+      <hr />
 
-      <footer>
-        Comment wall courtesy of Google Firebase.
-      </footer>
+      <div id="comments-list"></div>
+
+      <footer>Comment wall courtesy of Google Firebase.</footer>
     </div>
   </div>
 </body>
 </html>
-
