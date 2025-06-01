@@ -6,28 +6,76 @@
   <title>Athanasios Angouras</title>
   <style>
     @import url(https://themes.googleusercontent.com/fonts/css?kit=pR0sBQVcY0JZc_ciXjFsK00bFgWhVDxGeNvvjX778ks);
-    
-    html, body {
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-    }
 
     body {
-      background-color: #ffffff;
       font-family: "Libre Baskerville", serif;
+      background-color: #ffffff;
+      margin: 0;
       padding: 72pt;
+      box-sizing: border-box;
     }
 
     .container {
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
-      max-width: 800px;
+      justify-content: space-between;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
-    .text-content {
+    .text-section {
       max-width: 60%;
     }
 
-    .c
+    .c1 {
+      font-size: 19pt;
+      margin: 0 0 10pt 0;
+    }
+
+    .c3 {
+      font-size: 12pt;
+      margin: 0;
+    }
+
+    .c3.student-line {
+      margin-bottom: 20px;
+    }
+
+    nav {
+      margin-top: 30px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      font-size: 19pt;
+    }
+
+    .profile-image {
+      width: 158.5px;
+      height: 158.5px;
+      object-fit: cover;
+      margin-left: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-section">
+      <p class="c1">Athanasios “Nasos” Angouras</p>
+      <p class="c3 student-line">Student, University of California, San Diego</p>
+      <p class="c3">In Progress: BA in Classical Studies with Minor in Philosophy</p>
+      <p class="c3">Expected Graduation: Spring-Summer 2026</p>
+      <p class="c3">Interests: Latin, Hellenistic Philosophy, Christianity, Classical and Hellenistic Greek Antiquity</p>
+      <p class="c3">Post-Undergraduate Plan: JD/PhD Program</p>
+      <p class="c3">Contact: aangouras@ucsd.edu</p>
+
+      <nav>
+        <div><a href="about.html">About</a></div>
+      </nav>
+    </div>
+
+    <img src="images/image1.png" alt="Profile Photo" class="profile-image">
+  </div>
+</body>
+</html>
