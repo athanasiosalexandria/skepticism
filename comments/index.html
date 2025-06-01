@@ -7,16 +7,10 @@
   <title>Leave a Comment</title>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
   <style>
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    /* same styles... */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       background-color: #ffffff;
@@ -25,72 +19,36 @@
       animation: fadeIn 2s ease forwards;
     }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      text-align: left;
-      padding: 80px 40px;
-    }
+    .container { display: flex; justify-content: center; text-align: left; padding: 80px 40px; }
+    .content { max-width: 800px; width: 100%; }
 
-    .content {
-      max-width: 800px;
-      width: 100%;
-    }
+    h1 { font-size: 32px; margin-top: 70px; margin-bottom: 20px; }
+    p { font-size: 16px; line-height: 1.6; margin-bottom: 16px; }
+    a { color: #1155cc; text-decoration: underline; }
 
-    h1 {
-      font-size: 32px;
-      margin-top: 70px;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    a {
-      color: #1155cc;
-      text-decoration: underline;
-    }
-
-    footer {
-      font-size: 14px;
-      margin-top: 30px;
-    }
+    footer { font-size: 14px; margin-top: 30px; }
 
     input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 5px;
+      width: 100%; padding: 10px; font-size: 16px; margin-top: 5px;
     }
 
     button {
-      background-color: black;
-      color: white;
-      border: none;
-      cursor: pointer;
+      background-color: black; color: white; border: none; cursor: pointer;
     }
 
-    button:hover {
-      background-color: #333;
-    }
+    button:hover { background-color: #333; }
 
     .comment-box {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin-bottom: 10px;
+      border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;
     }
   </style>
 
-  <!-- Firebase Libraries -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <!-- Firebase v9+ Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDF8JB5agbRfucm_bk4W_MgH_av3Pd33nY",
       authDomain: "commentboard-704f2.firebaseapp.com",
@@ -102,12 +60,64 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    getAnalytics(app);
+    const db = getFirestore(app);
+
+    const commentsRef = collection(db, "comments");
+    const form = document.getElementById("comment-form");
+    const commentsList = document.getElementById("comments-list");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const comment = form.comment.value.trim();
+
+      if (!name || !comment) {
+        alert("Please fill in both fields");
+        return;
+      }
+
+      try {
+        await addDoc(commentsRef, {
+          name,
+          comment,
+          timestamp: serverTimestamp()
+        });
+
+        form.reset();
+      } catch (error) {
+        console.error("Error adding comment: ", error.message);
+      }
+    });
+
+    // Load comments in real-time
+    const q = query(commentsRef, orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+      commentsList.innerHTML = "";
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+
+        const commentDiv = document.createElement("div");
+        commentDiv.className = "comment-box";
+
+        const nameEl = document.createElement("strong");
+        nameEl.textContent = data.name;
+
+        const commentEl = document.createElement("p");
+        commentEl.textContent = data.comment;
+
+        commentDiv.appendChild(nameEl);
+        commentDiv.appendChild(document.createElement("br"));
+        commentDiv.appendChild(commentEl);
+
+        commentsList.appendChild(commentDiv);
+      });
+    });
   </script>
 </head>
-
 <body>
   <div class="container">
     <div class="content">
@@ -126,7 +136,7 @@
       <hr/>
 
       <div id="comments-list">
-        <!-- Comments will be inserted here -->
+        <!-- Comments will appear here -->
       </div>
 
       <footer>
@@ -134,59 +144,5 @@
       </footer>
     </div>
   </div>
-
-  <script>
-    const commentsRef = db.collection('comments');
-    const form = document.getElementById('comment-form');
-    const commentsList = document.getElementById('comments-list');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = form.name.value.trim();
-      const comment = form.comment.value.trim();
-
-      if (!name || !comment) {
-        alert('Please fill in both fields');
-        return;
-      }
-
-      try {
-        await commentsRef.add({
-          name,
-          comment,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        form.reset();
-      } catch (error) {
-        console.error('Error adding comment: ', error.message);
-      }
-    });
-
-    // Load comments in real time
-    commentsRef.orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      commentsList.innerHTML = '';
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-
-        const commentDiv = document.createElement('div');
-        commentDiv.className = 'comment-box';
-
-        const nameEl = document.createElement('strong');
-        nameEl.textContent = data.name;
-
-        const commentEl = document.createElement('p');
-        commentEl.textContent = data.comment;
-
-        commentDiv.appendChild(nameEl);
-        commentDiv.appendChild(document.createElement('br'));
-        commentDiv.appendChild(commentEl);
-
-        commentsList.appendChild(commentDiv);
-      });
-    });
-  </script>
 </body>
 </html>
