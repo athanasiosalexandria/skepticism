@@ -160,5 +160,14 @@
       </nav>
     </div>
   </div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("img").forEach(function (img) {
+          img.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+          });
+        });
+      });
+    </script>
 </body>
 </html>
